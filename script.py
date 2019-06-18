@@ -37,8 +37,6 @@ for text in clean:
         line = '\t'.join([str(x) for x in array_line])
         conll.write(line)
         conll.write('\n')
-    line = '\t'.join([str(x) for x in array_line])
-    conll.write(line)
     conll.write('\n')
     conll.write('\n')
 conll.close()

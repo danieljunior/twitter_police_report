@@ -1,0 +1,1 @@
+{"model.text_field_embedder.token_embedders.elmo.options_file": "/workspace/elmo_options.json", "model.text_field_embedder.token_embedders.elmo.weight_file": "/workspace/elmo_weights.hdf5"}

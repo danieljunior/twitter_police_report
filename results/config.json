@@ -1,0 +1,74 @@
+{
+    "dataset_reader": {
+        "type": "srl",
+        "token_indexers": {
+            "elmo": {
+                "type": "elmo_characters"
+            }
+        }
+    },
+    "iterator": {
+        "type": "bucket",
+        "batch_size": 80,
+        "sorting_keys": [
+            [
+                "tokens",
+                "num_tokens"
+            ]
+        ]
+    },
+    "model": {
+        "type": "srl",
+        "binary_feature_dim": 100,
+        "encoder": {
+            "type": "alternating_lstm",
+            "hidden_size": 300,
+            "input_size": 1124,
+            "num_layers": 8,
+            "recurrent_dropout_probability": 0.1,
+            "use_input_projection_bias": false
+        },
+        "initializer": [
+            [
+                "tag_projection_layer.*weight",
+                {
+                    "type": "orthogonal"
+                }
+            ]
+        ],
+        "regularizer": [
+            [
+                ".*scalar_parameters.*",
+                {
+                    "alpha": 0.001,
+                    "type": "l2"
+                }
+            ]
+        ],
+        "text_field_embedder": {
+            "token_embedders": {
+                "elmo": {
+                    "type": "elmo_token_embedder",
+                    "do_layer_norm": false,
+                    "dropout": 0.1,
+                    "options_file": "/workspace/elmo_options.json",
+                    "weight_file": "/workspace/elmo_weights.hdf5"
+                }
+            }
+        }
+    },
+    "train_data_path": "/workspace/twitter_police_report/data/train/train_file_0.conll",
+    "validation_data_path": "/workspace/twitter_police_report/data/validation/validation_file_0.conll",
+    "trainer": {
+        "cuda_device": 0,
+        "grad_clipping": 1,
+        "num_epochs": 500,
+        "num_serialized_models_to_keep": 10,
+        "optimizer": {
+            "type": "adadelta",
+            "rho": 0.95
+        },
+        "patience": 200,
+        "validation_metric": "+f1-measure-overall"
+    }
+}
